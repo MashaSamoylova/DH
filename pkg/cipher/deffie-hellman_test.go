@@ -52,15 +52,16 @@ func TestRFC(t *testing.T) {
 func testConnection(
 	t *testing.T,
 	AlicePrivate, BobPrivate, ExpectedAlicePublic, ExpectedBobPublic, ExpectedSessionKey, P, G *big.Int) {
-	AlicePublic := GeneratePrivateKey(P, G, AlicePrivate)
-	assert.Equal(t, AlicePublic, ExpectedAlicePublic, "Wrong Alice public key")
 
-	BobPublic := GeneratePrivateKey(P, G, BobPrivate)
-	assert.Equal(t, BobPublic, ExpectedBobPublic, "Wrong Bob public key")
+	Alice := NewDiffieHellman(AlicePrivate, P, G)
+	assert.Equal(t, ExpectedAlicePublic, Alice.PublicKey, "Wrong Alice public key")
 
-	SessionKey := GenerateSessionKey(P, BobPublic, AlicePrivate)
-	assert.Equal(t, SessionKey, ExpectedSessionKey, "Wrong Alice session Key")
+	Bob := NewDiffieHellman(BobPrivate, P, G)
+	assert.Equal(t, ExpectedBobPublic, Bob.PublicKey, "Wrong Bob public key")
 
-	SessionKey = GenerateSessionKey(P, AlicePublic, BobPrivate)
-	assert.Equal(t, SessionKey, ExpectedSessionKey, "Wrong Alice session Key")
+	Alice.GenerateSessionKey(Bob.PublicKey)
+	assert.Equal(t, ExpectedSessionKey, Alice.SessionKey, "Wrong Alice session Key")
+
+	Bob.GenerateSessionKey(Alice.PublicKey)
+	assert.Equal(t, ExpectedSessionKey, Bob.SessionKey, "Wrong Bob session Key")
 }
