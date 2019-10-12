@@ -31,8 +31,16 @@ func NewDiffieHellman(PrivateKey, P, G *big.Int) DiffieHellman {
 }
 
 func NewDiffieHellmanWithRandom(P, G *big.Int) DiffieHellman {
-	privateKey := generateNum(1024)
+	privateKey := generateNum(100)
 	return NewDiffieHellman(privateKey, P, G)
+}
+
+func GenerateWithMod(M *big.Int) *big.Int {
+	k, err := rand.Int(rand.Reader, M)
+	if err != nil {
+		panic("Failed to rand num -_0_0_")
+	}
+	return k
 }
 
 func (p *DiffieHellman) GenerateSessionKey(a *big.Int) {
