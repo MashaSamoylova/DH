@@ -8,7 +8,7 @@ import (
 var one = big.NewInt(1)
 
 // https://rosettacode.org/wiki/Chinese_remainder_theorem#Go
-func CRT(a, n []*big.Int) (*big.Int, error) {
+func CRT(a, n []*big.Int) (*big.Int, *big.Int, error) {
 	p := new(big.Int).Set(n[0])
 	for _, n1 := range n[1:] {
 		p.Mul(p, n1)
@@ -18,9 +18,9 @@ func CRT(a, n []*big.Int) (*big.Int, error) {
 		q.Div(p, n1)
 		z.GCD(nil, &s, n1, &q)
 		if z.Cmp(one) != 0 {
-			return nil, fmt.Errorf("%d not coprime", n1)
+			return nil, nil, fmt.Errorf("%d not coprime", n1)
 		}
 		x.Add(&x, s.Mul(a[i], s.Mul(&s, &q)))
 	}
-	return x.Mod(&x, p), nil
+	return x.Mod(&x, p), p, nil
 }

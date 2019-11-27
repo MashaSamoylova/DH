@@ -1,4 +1,4 @@
-package main
+package challenge57
 
 import (
 	"fmt"
@@ -14,23 +14,15 @@ var one = big.NewInt(1)
 var zero = big.NewInt(0)
 
 // https://toadstyle.org/cryptopals/57.txt
-func main() {
+func Attack(P,G,Q *big.Int, victim cipher.DiffieHellman) (*big.Int, *big.Int) {
 	var err error
-	G := new(big.Int)
-	P := new(big.Int)
-	Q := new(big.Int)
+
 	J := new(big.Int)
 
 	tmp := new(big.Int)
 	P_1 := new(big.Int)
 
-	G.SetString("4565356397095740655436854503483826832136106141639563487732438195343690437606117828318042418238184896212352329118608100083187535033402010599512641674644143", 10)
-	P.SetString("7199773997391911030609999317773941274322764333428698921736339643928346453700085358802973900485592910475480089726140708102474957429903531369589969318716771", 10)
 
-	Q.SetString("236234353446506858198510045061214171961", 10)
-
-	privateKey := cipher.GenerateWithMod(Q)
-	Bob := cipher.NewDiffieHellman(privateKey, P, G)
 
 	P_1.Sub(P, one)
 	J.Div(P_1, Q)
@@ -44,8 +36,8 @@ func main() {
 			tmp.Div(P_1, r)
 			H.Exp(A, tmp, P)
 		}
-		Bob.GenerateSessionKey(H)
-		newB := findB(H, P, r, Bob.SessionKey)
+		victim.GenerateSessionKey(H)
+		newB := findB(H, P, r, victim.SessionKey)
 		bS[i] = newB
 	}
 
@@ -54,15 +46,16 @@ func main() {
 	fmt.Println("Bs:")
 	spew.Dump(bS)
 
-	bobPrivate, err := tools.CRT(bS, rS)
+	n, r,  err := tools.CRT(bS, rS)
 	if err != nil {
 		fmt.Println(err)
 		panic("CRT failed")
 	}
 	fmt.Println("Bob's private: ")
-	spew.Dump(Bob.PrivateKey)
+	spew.Dump(victim.PrivateKey)
 	fmt.Println("Found: ")
-	spew.Dump(bobPrivate)
+	spew.Dump(n)
+	return n, r
 }
 
 func findB(H, P, r, SessionKey *big.Int) *big.Int {
@@ -95,4 +88,20 @@ func factor(A *big.Int) []*big.Int {
 		}
 	}
 	return rS
+}
+
+
+func main() {
+	G := new(big.Int)
+	P := new(big.Int)
+	Q := new(big.Int)
+
+	G.SetString("4565356397095740655436854503483826832136106141639563487732438195343690437606117828318042418238184896212352329118608100083187535033402010599512641674644143", 10)
+	P.SetString("7199773997391911030609999317773941274322764333428698921736339643928346453700085358802973900485592910475480089726140708102474957429903531369589969318716771", 10)
+
+	Q.SetString("236234353446506858198510045061214171961", 10)
+
+	privateKey := cipher.GenerateWithMod(Q)
+	Bob := cipher.NewDiffieHellman(privateKey, P, G)
+	Attack(P, G, Q, Bob)
 }

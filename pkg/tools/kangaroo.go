@@ -54,7 +54,6 @@ func Kangaroo(g, y, a, b, p *big.Int) *big.Int {
 			return b
 		}
 	}
-
 	fmt.Println("Kangaroo failed")
 	return big.NewInt(0)
 }
