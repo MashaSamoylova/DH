@@ -6,8 +6,8 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 
-	"github.com/MashaSamoylova/deffie-hellman/pkg/cipher"
-	"github.com/MashaSamoylova/deffie-hellman/pkg/tools"
+	"github.com/MashaSamoylova/DH/pkg/cipher"
+	"github.com/MashaSamoylova/DH/pkg/tools"
 )
 
 var one = big.NewInt(1)

@@ -1,8 +1,8 @@
-module github.com/MashaSamoylova/deffie-hellman
+module github.com/MashaSamoylova/DH
 
 go 1.12
 
 require (
-	github.com/davecgh/go-spew v1.1.0
+	github.com/davecgh/go-spew v1.1.1
 	github.com/stretchr/testify v1.4.0
 )

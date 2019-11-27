@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/MashaSamoylova/deffie-hellman/pkg/cipher"
+	"github.com/MashaSamoylova/DH/pkg/cipher"
 )
 
 // MITM key-fixing attack on Diffie-Hellman with parameter injection

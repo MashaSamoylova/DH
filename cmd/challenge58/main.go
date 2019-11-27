@@ -3,9 +3,9 @@ package main
 import (
 	"math/big"
 
-	"github.com/MashaSamoylova/deffie-hellman/cmd/challenge57"
-	"github.com/MashaSamoylova/deffie-hellman/pkg/cipher"
-	"github.com/MashaSamoylova/deffie-hellman/pkg/tools"
+	"github.com/MashaSamoylova/DH/cmd/challenge57"
+	"github.com/MashaSamoylova/DH/pkg/cipher"
+	"github.com/MashaSamoylova/DH/pkg/tools"
 
 	"github.com/davecgh/go-spew/spew"
 )
