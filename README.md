@@ -1,1 +1,1 @@
-# deffie-hellman
+# diffie-hellman
